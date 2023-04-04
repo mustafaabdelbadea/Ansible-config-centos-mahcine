@@ -1,0 +1,28 @@
+- name: start
+  hosts: all
+  gather_facts: true
+  vars:
+    - package_name: pcp-pmda-nginx.x86_64
+    - package_version: latest
+  tasks:
+  - name: test
+    tags: always
+    command: echo hello
+  - name: update
+    tags: update_tag
+    yum:
+      name: "*"
+      state: latest
+  - name:
+    tags: start_tag
+    yum:
+      name: "{{ package_name }}"
+      state: "{{  package_version }}"
+  - name: copy
+    copy:
+      src: ./index.html
+      dest: /usr/share/nginx/html/
+  - name: restart
+    systemd:
+      name: nginx
+      state: restarted
